@@ -4,6 +4,8 @@ from huggingface_hub import login
 login()  # 여기에 토큰을 입력하라고 나옵니다
 # ✅ KoT5 중간 요약 파인튜닝 (Hugging Face Trainer 없이 PyTorch 직접 학습)
 
+# ✅ KoT5 중간 요약 파인튜닝 (val loss 기준 최적 모델 저장 포함)
+
 !pip install transformers sentencepiece --quiet
 
 import torch
@@ -11,19 +13,17 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from torch.utils.data import Dataset, DataLoader
 import json
 from tqdm import tqdm
+import os
 
 # 1. 모델 및 토크나이저 로딩
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-
 model_name = "wisenut-nlp-team/KoT5"
-
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-
-# 2. 커스텀 데이터셋
+# 2. 커스텀 데이터셋 정의
 class SummaryDataset(Dataset):
     def __init__(self, path, tokenizer, max_input_len=512, max_target_len=128):
         self.data = []
@@ -54,15 +54,19 @@ class SummaryDataset(Dataset):
 
 # 3. 데이터 로딩
 train_dataset = SummaryDataset("summary_mid_train_final.jsonl", tokenizer, max_input_len=384, max_target_len=96)
-val_dataset = SummaryDataset("summary_mid_val_final.jsonl", tokenizer)
+val_dataset = SummaryDataset("summary_mid_val_final.jsonl", tokenizer, max_input_len=384, max_target_len=96)
+
 train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=4)
 
 # 4. 옵티마이저 설정
 optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
 
-# 5. 학습 루프
+# 5. 학습 루프 + 최적 모델 저장
 num_epochs = 5
+best_val_loss = float('inf')
+save_path = "kot5-mid-summary-manual"
+
 for epoch in range(num_epochs):
     model.train()
     total_loss = 0
@@ -74,7 +78,8 @@ for epoch in range(num_epochs):
         optimizer.step()
         optimizer.zero_grad()
         total_loss += loss.item()
-    print(f"Epoch {epoch+1} Train Loss: {total_loss / len(train_loader):.4f}")
+    avg_train_loss = total_loss / len(train_loader)
+    print(f"Epoch {epoch+1} Train Loss: {avg_train_loss:.4f}")
 
     # 검증
     model.eval()
@@ -84,8 +89,12 @@ for epoch in range(num_epochs):
             batch = {k: v.to(device) for k, v in batch.items()}
             outputs = model(**batch)
             val_loss += outputs.loss.item()
-    print(f"Epoch {epoch+1} Val Loss: {val_loss / len(val_loader):.4f}")
+    avg_val_loss = val_loss / len(val_loader)
+    print(f"Epoch {epoch+1} Val Loss: {avg_val_loss:.4f}")
 
-# 6. 모델 저장
-model.save_pretrained("kot5-mid-summary-manual")
-tokenizer.save_pretrained("kot5-mid-summary-manual")
+    # 최적 모델 저장
+    if avg_val_loss < best_val_loss:
+        best_val_loss = avg_val_loss
+        print(f"✅ Best model updated at epoch {epoch+1} (val_loss={best_val_loss:.4f})")
+        model.save_pretrained(save_path)
+        tokenizer.save_pretrained(save_path)
