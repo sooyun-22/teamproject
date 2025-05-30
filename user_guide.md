@@ -16,6 +16,15 @@ cd teamproject
 
 ### 2. VS Code에서 터미널 열기 및 가상환경 설정 (선택)
 
+> ❗ PowerShell에서 `activate` 명령이 차단될 경우:
+> 관리자 권한 PowerShell을 열고 아래 명령어를 입력하세요:
+>
+> ```powershell
+> Set-ExecutionPolicy RemoteSigned
+> ```
+>
+> 이후 `Y`를 눌러 설정을 허용한 뒤 다시 시도하세요.
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
@@ -26,6 +35,19 @@ venv\Scripts\activate
 ---
 
 ### 3. 패키지 설치
+
+> ❗ pip 업그레이드 중 아래와 같은 메시지가 뜰 경우:
+>
+> ```
+> ERROR: To modify pip, please run the following command:
+> C:\...python.exe -m pip install --upgrade pip
+> ```
+>
+> 아래 명령어를 대신 사용하세요:
+>
+> ```bash
+> python -m pip install --upgrade pip
+> ```
 
 ```bash
 pip install --upgrade pip
@@ -72,3 +94,5 @@ python src/main.py
 ```text
 C:\Users\사용자이름\teamproject
 ```
+
+또는 GitHub에서 `.zip`으로 다운로드했다면, 압축을 푼 후 생성된 `teamproject-main` 폴더를 열어주세요.
