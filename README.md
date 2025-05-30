@@ -38,6 +38,8 @@ pip install -r requirements.txt
 ```
 📌 네이버 API 키는 src/naver_books.py 상단에 직접 입력해야 합니다.
 
+---
+
 ▶ 실행 방법
 ```bash
 python src/main.py
@@ -50,8 +52,9 @@ python src/main.py
 - `p.py`: PyQt 환경 설정  
 - `requirements.txt`: 전체 환경 구축에 필요
 
+---
 
-🤖 사용 모델 (Hugging Face) 
+## 🤖 사용 모델 (Hugging Face) 
 JiinLee/kot5-keyword-summary
 
 JiinLee/kot5-mid-summary
@@ -61,7 +64,9 @@ JiinLee/kot5-long-summary
 모델은 모두 공개(Public) 상태이며, transformers 라이브러리에서 토큰 없이 직접 불러올 수 있습니다.
 자세한 정보는 huggingface_links.md 참조.
 
-📁 디렉토리 구조
+---
+
+## 📁 디렉토리 구조
 ```plaintext 
 teamproject/
 │
@@ -94,8 +99,9 @@ teamproject/
     ├── user_guide.md          # 사용자 가이드
     └── developer_guide.md     # 개발자 가이드
 ```
+---
 
-📄 문서 바로 가기
+## 📄 문서 바로 가기
 📘 사용자 가이드
 🛠️ 개발자 가이드
 
