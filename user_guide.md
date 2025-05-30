@@ -87,3 +87,10 @@ C:\Users\사용자이름\teamproject
 ```
 
 또는 GitHub에서 `.zip`으로 다운로드했다면, 압축을 푼 후 생성된 `teamproject-main` 폴더를 열어주세요.
+
+---
+
+## 🖥️실행 화면
+![Image](https://github.com/user-attachments/assets/25041846-d465-41e1-8075-a20fe54f7324)
+![Image](https://github.com/user-attachments/assets/27f19e65-4661-42e9-8910-1b87f0c97af6)
+![Image](https://github.com/user-attachments/assets/74bba7ec-ac06-476e-8041-52e2323a7d06)
