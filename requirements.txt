@@ -53,7 +53,7 @@ safetensors==0.5.3
 scikit-learn==1.6.1
 scipy==1.15.3
 sentence-transformers==4.1.0
-sentencepiece @ file:///C:/Users/paver/sentencepiece-0.2.1-cp313-cp313-win_amd64.whl#sha256=a7a6e195113d9504751eb6d9d34e2dcb2f98b9fa67358d03f1e3eaab6126761e
+sentencepiece>=0.1.99
 setuptools==78.1.0
 six==1.17.0
 sqlparse==0.5.3
