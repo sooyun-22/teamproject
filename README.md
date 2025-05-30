@@ -35,7 +35,7 @@ PyQt5 기반의 직관적인 인터페이스를 통해 책 정보와 요약 결�
 git clone https://github.com/sooyun-22/teamproject.git
 cd teamproject
 ```
-VS Code에서 위 디렉토리를 열어주세요. (File > Open Folder)
+VS Code에서 'teamproject' 폴더를 열어주세요. (File > Open Folder)
 
 
 2. VS Code에서 터미널 열기 및 가상환경 설정 (선택)
